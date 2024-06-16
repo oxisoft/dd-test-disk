@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Function to clear cache based on the OS
+clear_cache() {
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    echo "Clearing cache on Linux..."
+    sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Clearing cache on macOS..."
+    sudo purge
+  else
+    echo "Unsupported OS. Cache clearing not supported."
+    exit 1
+  fi
+}
+
 # Check if the script is run as sudo
 if [ "$EUID" -ne 0 ]; then 
   echo "Please run this script as sudo to avoid entering the password in the middle of the test."
@@ -22,8 +36,7 @@ mkdir -p $FOLDER
 START_TIME=$(date +%s)
 
 # Clear the cache
-echo "Clearing cache..."
-sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"
+clear_cache
 
 # Perform disk test
 echo "Starting disk test in folder: $FOLDER"
@@ -31,8 +44,7 @@ echo "Writing test..."
 dd if=/dev/zero of=$FOLDER/testfile bs=1M count=1024 conv=fdatasync
 
 # Clear the cache again before reading
-echo "Clearing cache again..."
-sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"
+clear_cache
 
 echo "Reading test..."
 dd if=$FOLDER/testfile of=/dev/null bs=1M count=1024
