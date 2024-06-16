@@ -14,6 +14,18 @@ clear_cache() {
   fi
 }
 
+# Function to perform disk write test
+disk_write_test() {
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    dd if=/dev/zero of=$FOLDER/testfile bs=1M count=1024 conv=fdatasync
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    dd if=/dev/zero of=$FOLDER/testfile bs=1M count=1024 conv=sync
+  else
+    echo "Unsupported OS. Disk write test not supported."
+    exit 1
+  fi
+}
+
 # Check if the script is run as sudo
 if [ "$EUID" -ne 0 ]; then 
   echo "Please run this script as sudo to avoid entering the password in the middle of the test."
@@ -41,7 +53,7 @@ clear_cache
 # Perform disk test
 echo "Starting disk test in folder: $FOLDER"
 echo "Writing test..."
-dd if=/dev/zero of=$FOLDER/testfile bs=1M count=1024 conv=fdatasync
+disk_write_test
 
 # Clear the cache again before reading
 clear_cache
