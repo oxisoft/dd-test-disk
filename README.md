@@ -12,7 +12,7 @@ This script is designed to test the disk performance by writing and reading a 1 
 You can run the script directly from GitHub using the following command:
 
 ```sh
-curl -sL https://raw.githubusercontent.com/oxisoft/dd-test-disk/main/disk_test.sh | sudo bash -s /path/to/folder
+curl -sL https://raw.githubusercontent.com/oxisoft/dd-test-disk/main/disk-test.sh | sudo bash -s /path/to/folder
 ```
 
 Replace `/path/to/folder` with the actual folder path where you want to perform the disk test.
@@ -20,7 +20,7 @@ Replace `/path/to/folder` with the actual folder path where you want to perform 
 ### Example
 
 ```sh
-curl -sL https://raw.githubusercontent.com/oxisoft/dd-test-disk/main/disk_test.sh | sudo bash -s /tmp/testdisk
+curl -sL https://raw.githubusercontent.com/oxisoft/dd-test-disk/main/disk-test.sh | sudo bash -s /tmp/testdisk
 ```
 
 ## License
